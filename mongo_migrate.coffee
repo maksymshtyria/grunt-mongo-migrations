@@ -80,8 +80,9 @@ class Migrate
   # Return a list of pending migrations
   pending: fibrous ->
     filenames = fs.sync.readdir(@opts.path).sort()
+    ext = new RegExp("^([^_].+)." + (@opts.ext or "coffee") + "$")
     names = lazy(filenames).map (filename) ->
-      return unless (match = filename.match /^([^_].+)\.coffee$/)
+      return unless (match = filename.match ext)
       match[1]
     names = lazy(names).compact()
     run = (mv.name for mv in @model.sync.find())
