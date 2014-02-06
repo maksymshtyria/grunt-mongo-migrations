@@ -112,9 +112,10 @@ Migrate = (function() {
   Migrate.prototype.pending = fibrous(function() {
     var filenames, mv, names, run;
     filenames = fs.sync.readdir(this.opts.path).sort();
+    ext = new RegExp("^([^_].+)\." + (this.opts.ext || 'coffee') + "$");
     names = lazy(filenames).map(function(filename) {
       var match;
-      if (!(match = filename.match(/^([^_].+)\.coffee$/))) {
+      if (!(match = filename.match(ext))) {
         return;
       }
       return match[1];
